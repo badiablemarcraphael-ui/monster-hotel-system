@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-container" style="max-width: 600px; margin: auto; background: var(--surface-dark); padding: 2rem; border: 1px solid var(--neon-cyan); border-radius: 5px;">
+    
+    <div style="border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+        <h2 style="color: var(--neon-cyan); margin: 0; text-transform: uppercase;">SECURE RESERVATION</h2>
+        <p style="color: var(--neon-pink); font-size: 1.2rem; margin-top: 5px; font-weight: bold;">{{ room_type.name }} | ₱{{ room_type.base_price }}/night</p>
+    </div>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          {% if category == 'error' %}
+            <div class="flash-msg flash-error">{{ message }}</div>
+          {% else %}
+            <div class="flash-msg flash-success">{{ message }}</div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
+            <!-- Check In -->
+            <div>
+                <label style="display: block; margin-bottom: 5px; color: var(--neon-cyan);">Check-In Date</label>
+                <input type="date" name="check_in" required style="width: 100%; padding: 10px; background: var(--bg-dark); border: 1px solid #333; color: white; color-scheme: dark;">
+            </div>
+            <!-- Check Out -->
+            <div>
+                <label style="display: block; margin-bottom: 5px; color: var(--neon-cyan);">Check-Out Date</label>
+                <input type="date" name="check_out" required style="width: 100%; padding: 10px; background: var(--bg-dark); border: 1px solid #333; color: white; color-scheme: dark;">
+            </div>
+        </div>
+
+        <div style="background: rgba(0,0,0,0.5); padding: 15px; border-left: 3px solid var(--neon-pink); margin-bottom: 2rem;">
+            <p style="color: #aaa; font-size: 0.9rem; margin: 0;">System Note: 12% Value Added Tax will be applied to the final transaction total.</p>
+        </div>
+
+        <button type="submit" class="btn-accent" style="width: 100%; font-size: 1.2rem; padding: 15px;">Confirm Transaction</button>
+    </form>
+</div>
+{% endblock %}

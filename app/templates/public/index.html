@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero-section" style="margin-bottom: 4rem;">
+    <h1 style="color: var(--neon-cyan); text-shadow: 0 0 15px var(--neon-cyan);">Welcome to Monster Hotel</h1>
+    <p>Experience the ultimate stay. Secure your dynamic room today.</p>
+</section>
+
+<section class="rooms-section">
+    <h2 style="color: var(--neon-cyan); border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 2rem;">AVAILABLE CLASSIFICATIONS</h2>
+    
+    <!-- CSS Grid to perfectly align the cards -->
+    <div class="room-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+        
+        <!-- Loop through every room type in the database -->
+        {% for room in room_types %}
+        <div class="room-card" style="background: var(--surface-dark); border: 1px solid #333; border-radius: 5px; overflow: hidden; transition: all 0.3s ease;">
+            
+            <!-- Fallback Image if Admin didn't provide a URL -->
+            <img src="{{ room.image_url if room.image_url else 'https://via.placeholder.com/400x200/090a0f/00f3ff?text=MONSTER+HOTEL' }}" alt="{{ room.name }}" style="width: 100%; height: 200px; object-fit: cover; border-bottom: 2px solid var(--neon-cyan);">
+            
+            <div style="padding: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <h3 style="color: var(--text-light); margin: 0; font-size: 1.5rem;">{{ room.name }}</h3>
+                    <span style="color: var(--neon-pink); font-weight: bold; font-size: 1.2rem;">₱{{ room.base_price }}<small style="color: #666; font-size: 0.8rem;">/night</small></span>
+                </div>
+                
+                <p style="color: var(--neon-cyan); font-size: 0.9rem; margin-bottom: 15px;">Max Capacity: {{ room.capacity }} Pax</p>
+                <p style="color: #bbb; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.5;">{{ room.description }}</p>
+                
+                <!-- We will wire up the booking route here next! -->
+                <a href="{{ url_for('user.book_room', room_type_id=room.id) }}" class="btn-accent" style="display: block; text-align: center;">Initiate Booking</a>
+            </div>
+        </div>
+        
+        <!-- What to show if the database is empty -->
+        {% else %}
+        <p style="color: #888; text-align: center; grid-column: 1 / -1;">No room classifications available in the system yet.</p>
+        {% endfor %}
+
+    </div>
+</section>
+
+<!-- --- GUEST FEEDBACK SECTION --- -->
+<section class="reviews-section" style="margin-top: 5rem; border-top: 1px dashed #333; padding-top: 3rem;">
+    <h2 style="color: var(--neon-pink); text-align: center; margin-bottom: 2rem; text-shadow: 0 0 10px rgba(255, 0, 234, 0.3);">TRANSMITTED GUEST FEEDBACK</h2>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+        {% for review in reviews %}
+        <div style="background: rgba(18, 20, 29, 0.8); padding: 1.5rem; border-left: 3px solid var(--neon-cyan); border-radius: 3px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span style="color: var(--neon-cyan); font-weight: bold;">{{ review.user.email.split('@')[0] }}</span>
+                <span style="color: var(--neon-pink); font-size: 1.2rem; font-weight: bold;">{{ review.rating }} / 5</span>
+            </div>
+            <p style="color: #bbb; font-style: italic; font-size: 0.95rem;">"{{ review.comment }}"</p>
+            
+            <!-- NEW: Check if an image exists, and if so, display it! -->
+            {% if review.image_url %}
+                <div style="margin-top: 15px; border: 1px solid #333; overflow: hidden; border-radius: 3px;">
+                    <img src="{{ url_for('static', filename=review.image_url) }}" alt="Guest Review Image" style="width: 100%; height: 150px; object-fit: cover; display: block;">
+                </div>
+            {% endif %}
+            
+            <p style="color: #666; font-size: 0.8rem; margin-top: 15px; text-transform: uppercase; border-top: 1px dashed #333; padding-top: 10px;">Stayed in: {{ review.room_type.name }}</p>
+        </div>
+        {% else %}
+        <p style="color: #666; text-align: center; grid-column: 1 / -1; font-style: italic;">No public feedback available at this time.</p>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-container" style="max-width: 500px; margin: auto; background: var(--surface-dark); padding: 2rem; border: 1px solid var(--neon-cyan); border-radius: 5px;">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 20px;">
+        <h2 style="color: var(--neon-cyan); margin: 0;">INITIALIZE PHYSICAL ROOM</h2>
+        <a href="{{ url_for('admin.dashboard') }}" style="color: var(--text-light); text-decoration: none; font-size: 0.9rem;">[ Return ]</a>
+    </div>
+
+    <!-- Display Flash Messages (Errors/Success) -->
+    <!-- Display Flash Messages (Errors/Success) -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          
+          {% if category == 'error' %}
+            <div class="flash-msg flash-error">{{ message }}</div>
+          {% else %}
+            <div class="flash-msg flash-success">{{ message }}</div>
+          {% endif %}
+          
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="">
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 5px; color: var(--neon-cyan);">Auto-Assigned Room Number</label>
+            <!-- Notice the 'value' is set by Python and 'readonly' prevents accidental edits -->
+            <input type="number" name="room_number" value="{{ next_room_number }}" readonly style="width: 100%; padding: 10px; background: #000; border: 1px dashed var(--neon-pink); color: var(--neon-pink); font-size: 1.5rem; font-weight: bold; text-align: center;">
+        </div>
+        
+        <div style="margin-bottom: 2rem;">
+            <label style="display: block; margin-bottom: 5px; color: var(--neon-cyan);">Select Room Classification</label>
+            <select name="room_type_id" required style="width: 100%; padding: 10px; background: var(--bg-dark); border: 1px solid #333; color: white; appearance: none;">
+                <option value="" disabled selected>-- Select a Room Type --</option>
+                {% for type in room_types %}
+                    <option value="{{ type.id }}">{{ type.name }} (₱{{ type.base_price }})</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit" class="btn-accent" style="width: 100%;">Create Room</button>
+    </form>
+</div>
+{% endblock %}

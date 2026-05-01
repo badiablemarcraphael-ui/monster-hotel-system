@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="admin-header" style="border-bottom: 1px solid var(--neon-cyan); padding-bottom: 1rem; margin-bottom: 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h1 style="color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan); margin: 0;">BUSINESS ANALYTICS</h1>
+        <a href="{{ url_for('admin.dashboard') }}" style="color: var(--text-light); text-decoration: none; font-size: 0.9rem;">[ Return to Terminal ]</a>
+    </div>
+</div>
+
+<div class="analytics-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+    
+    <!-- REVENUE CARD -->
+    <div style="background: var(--surface-dark); padding: 2rem; border: 1px solid var(--neon-pink); border-radius: 5px; box-shadow: 0 0 20px rgba(255, 0, 234, 0.1);">
+        <h3 style="color: var(--text-light); margin-top: 0; font-size: 1.2rem; text-transform: uppercase;">Gross Revenue</h3>
+        <p style="font-size: 3rem; color: var(--neon-pink); margin: 10px 0; font-weight: bold; text-shadow: 0 0 10px rgba(255, 0, 234, 0.4);">
+            ₱{{ "{:,.2f}".format(revenue) }}
+        </p>
+        <p style="color: #888; font-size: 0.9rem; margin: 0; border-top: 1px dashed #333; padding-top: 10px;">
+            Total VAT Collected: <span style="color: var(--text-light);">₱{{ "{:,.2f}".format(tax) }}</span>
+        </p>
+    </div>
+
+    <!-- OCCUPANCY CARD -->
+    <div style="background: var(--surface-dark); padding: 2rem; border: 1px solid var(--neon-cyan); border-radius: 5px; box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);">
+        <h3 style="color: var(--text-light); margin-top: 0; font-size: 1.2rem; text-transform: uppercase;">Live Occupancy Rate</h3>
+        <p style="font-size: 3rem; color: var(--neon-cyan); margin: 10px 0; font-weight: bold; text-shadow: 0 0 10px rgba(0, 243, 255, 0.4);">
+            {{ occupancy }}%
+        </p>
+        
+        <!-- Neon Progress Bar -->
+        <!-- Neon Progress Bar -->
+        <div style="width: 100%; background: #000; height: 10px; border-radius: 5px; margin-bottom: 10px; overflow: hidden; border: 1px solid #333;">
+            <!-- We use an ID to target this element so the CSS linter stays quiet -->
+            <div id="occupancy-bar" style="height: 100%; background: var(--neon-cyan); box-shadow: 0 0 10px var(--neon-cyan);"></div>
+        </div>
+        
+        <!-- Tiny JS script to dynamically inject the Python variable as the width -->
+        <script>
+            document.getElementById('occupancy-bar').style.width = "{{ occupancy }}%";
+        </script>
+        
+        <p style="color: #888; font-size: 0.9rem; margin: 0;">
+            <span style="color: var(--text-light);">{{ occupied_rooms }}</span> out of <span style="color: var(--text-light);">{{ total_rooms }}</span> physical rooms currently engaged.
+        </p>
+    </div>
+
+</div>
+{% endblock %}

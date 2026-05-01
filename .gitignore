@@ -1,0 +1,11 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual Environments
+venv/
+env/
+
+# Secrets and Local databases
+.env
+instance/

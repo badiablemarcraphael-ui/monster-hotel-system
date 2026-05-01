@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="admin-header" style="border-bottom: 1px solid var(--neon-cyan); padding-bottom: 1rem; margin-bottom: 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h1 style="color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan); margin: 0;">PERSONNEL DIRECTORY</h1>
+        <a href="{{ url_for('admin.dashboard') }}" style="color: var(--text-light); text-decoration: none; font-size: 0.9rem;">[ Return to Terminal ]</a>
+    </div>
+</div>
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="flash-msg flash-{{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<!-- The Directory Table -->
+<div style="overflow-x: auto; background: var(--surface-dark); border: 1px solid #333; border-radius: 5px;">
+    <table style="width: 100%; border-collapse: collapse; text-align: left; color: var(--text-light);">
+        <thead>
+            <tr style="background: rgba(0, 243, 255, 0.1); border-bottom: 2px solid var(--neon-cyan);">
+                <th style="padding: 15px;">ID</th>
+                <th style="padding: 15px;">Email Address</th>
+                <th style="padding: 15px;">Clearance Level</th>
+                <th style="padding: 15px;">System Status</th>
+                <th style="padding: 15px;">Directives</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for u in users %}
+            <!-- Notice how the TR is safely inside the 'for u in users' loop! -->
+            <tr class="{% if u.is_archived %}archived-row{% endif %}" style="border-bottom: 1px solid #333;">
+                <td style="padding: 15px;">#{{ u.id }}</td>
+                <td style="padding: 15px; font-family: monospace; font-size: 1.1rem;">{{ u.email }}</td>
+                
+                <td class="role-{{ u.role }}" style="padding: 15px; font-weight: bold; text-transform: uppercase;">
+                    {{ u.role }}
+                </td>
+                
+                <td style="padding: 15px;">
+                    {% if u.is_archived %}
+                        <span style="color: red; border: 1px solid red; padding: 3px 8px; font-size: 0.8rem;">ARCHIVED</span>
+                    {% else %}
+                        <span style="color: #0f0; border: 1px solid #0f0; padding: 3px 8px; font-size: 0.8rem;">ACTIVE</span>
+                    {% endif %}
+                </td>
+                
+                <td style="padding: 15px; display: flex; gap: 5px; flex-wrap: wrap;">
+                    <!-- Role Management -->
+                    {% if u.role == 'user' %}
+                        <a href="{{ url_for('admin.modify_user', target_id=u.id, action='promote_staff') }}" class="btn-accent" style="padding: 5px 10px; font-size: 0.7rem;">Make Staff</a>
+                    {% endif %}
+                    
+                    {% if u.role in ['staff', 'user'] and current_user.role == 'super_admin' %}
+                        <a href="{{ url_for('admin.modify_user', target_id=u.id, action='promote_admin') }}" class="btn-accent" style="padding: 5px 10px; font-size: 0.7rem; border-color: var(--neon-cyan); color: var(--neon-cyan);">Make Admin</a>
+                    {% endif %}
+
+                    {% if u.role in ['admin', 'staff'] %}
+                        <a href="{{ url_for('admin.modify_user', target_id=u.id, action='demote_user') }}" class="btn-accent" style="padding: 5px 10px; font-size: 0.7rem; border-color: #888; color: #888;">Demote</a>
+                    {% endif %}
+
+                    <!-- Archive Management -->
+                    {% if not u.is_archived %}
+                        <a href="{{ url_for('admin.modify_user', target_id=u.id, action='archive') }}" class="btn-accent" style="padding: 5px 10px; font-size: 0.7rem; border-color: red; color: red;">Archive</a>
+                    {% else %}
+                        <a href="{{ url_for('admin.modify_user', target_id=u.id, action='restore') }}" class="btn-accent" style="padding: 5px 10px; font-size: 0.7rem; border-color: #0f0; color: #0f0;">Restore</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" style="padding: 15px; text-align: center; color: #888;">No other personnel found in the directory.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

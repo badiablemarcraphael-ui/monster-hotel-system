@@ -1,0 +1,172 @@
+/* --- CSS VARIABLES (60-30-10 Rule) --- */
+:root {
+    /* 60% Dominant: Deep Cyber-Dark */
+    --bg-dark: #090a0f;
+    --surface-dark: #12141d;
+    
+    /* 30% Secondary: Neon Cyan */
+    --neon-cyan: #00f3ff;
+    --text-light: #e2e8f0;
+    
+    /* 10% Accent: High-Energy Pink */
+    --neon-pink: #ff00ea;
+}
+
+/* --- GLOBAL STYLES --- */
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- NAVIGATION --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--surface-dark);
+    padding: 1rem 2rem;
+    border-bottom: 2px solid var(--neon-cyan);
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+}
+
+.logo {
+    color: var(--neon-cyan);
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-shadow: 0 0 5px var(--neon-cyan);
+    letter-spacing: 2px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-links a {
+    color: var(--text-light);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--neon-cyan);
+}
+
+/* --- BUTTONS --- */
+.btn-accent {
+    background-color: transparent;
+    color: var(--neon-pink);
+    border: 2px solid var(--neon-pink);
+    padding: 10px 24px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 0, 234, 0.2);
+}
+
+.btn-accent:hover {
+    background-color: var(--neon-pink);
+    color: var(--bg-dark);
+    box-shadow: 0 0 20px rgba(255, 0, 234, 0.6);
+}
+
+/* --- LAYOUT --- */
+.container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.hero-section {
+    text-align: center;
+    margin-top: 10vh;
+}
+
+.hero-section h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+/* --- FLASH MESSAGES --- */
+.flash-msg {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 3px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.flash-success {
+    background: rgba(0, 243, 255, 0.1);
+    border: 1px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+}
+
+.flash-error {
+    background: rgba(255, 0, 234, 0.1);
+    border: 1px solid var(--neon-pink);
+    color: var(--neon-pink);
+    box-shadow: 0 0 10px rgba(255, 0, 234, 0.2);
+}
+
+/* --- ROOM CARDS --- */
+.room-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--neon-cyan) !important;
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+}
+
+/* --- PRINT STYLES --- */
+@media print {
+    /* Hide everything on the page... */
+    body * {
+        visibility: hidden;
+    }
+    
+    /* ...Except the receipt and its contents */
+    #printableReceipt, #printableReceipt * {
+        visibility: visible;
+        color: #000 !important; /* Force black text for printers */
+        background: #FFF !important; /* Force white background for printers */
+        border-color: #000 !important;
+        text-shadow: none !important;
+        box-shadow: none !important;
+    }
+    
+    /* Position the receipt at the top left of the printed page */
+    #printableReceipt {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        border: none !important;
+    }
+
+    /* Hide the buttons so they don't show up on the paper */
+    .no-print {
+        display: none !important;
+    }
+}
+
+/* --- BOOKING STATUS COLORS --- */
+.status-pending { color: orange; }
+.status-confirmed { color: var(--neon-cyan); }
+.status-checked_out { color: #888; }
+.status-cancelled { color: red; }
+
+/* --- PERSONNEL DIRECTORY STYLES --- */
+.archived-row { 
+    opacity: 0.5; 
+}
+.role-super_admin { color: var(--neon-pink); }
+.role-admin { color: var(--neon-cyan); }
+.role-staff { color: orange; }
+.role-user { color: #888; }

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="admin-header" style="border-bottom: 1px solid var(--neon-cyan); padding-bottom: 1rem; margin-bottom: 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h1 style="color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan); margin: 0;">FEEDBACK MODERATION</h1>
+        <a href="{{ url_for('admin.dashboard') }}" style="color: var(--text-light); text-decoration: none; font-size: 0.9rem;">[ Return to Terminal ]</a>
+    </div>
+</div>
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      {% if category == 'error' %}
+        <div class="flash-msg flash-error">{{ message }}</div>
+      {% else %}
+        <div class="flash-msg flash-success">{{ message }}</div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<!-- Feedback Data Table -->
+<div style="overflow-x: auto; background: var(--surface-dark); border: 1px solid #333; border-radius: 5px;">
+    <table style="width: 100%; border-collapse: collapse; text-align: left; color: var(--text-light);">
+        <thead>
+            <tr style="background: rgba(0, 243, 255, 0.1); border-bottom: 2px solid var(--neon-cyan);">
+                <th style="padding: 15px;">ID</th>
+                <th style="padding: 15px;">Guest Email</th>
+                <th style="padding: 15px;">Classification</th>
+                <th style="padding: 15px;">Rating</th>
+                <th style="padding: 15px;">Comment</th>
+                <th style="padding: 15px;">Status</th>
+                <th style="padding: 15px;">System Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for review in reviews %}
+            <tr style="border-bottom: 1px solid #333;">
+                <td style="padding: 15px;">#{{ review.id }}</td>
+                <!-- Use db.relationship to grab the user and room type info -->
+                <td style="padding: 15px;">{{ review.user.email }}</td>
+                <td style="padding: 15px;">{{ review.room_type.name }}</td>
+                <td style="padding: 15px; color: var(--neon-pink); font-size: 1.2rem; font-weight: bold;">{{ review.rating }} / 5</td>
+                <td style="padding: 15px; font-style: italic; max-width: 300px;">"{{ review.comment }}"</td>
+                
+                <td class="status-{{ review.status }}" style="padding: 15px; font-weight: bold; text-transform: uppercase;">
+                    {{ review.status }}
+                </td>
+                
+                <td style="padding: 15px; display: flex; gap: 5px; flex-wrap: wrap;">
+                    {% if review.status == 'pending' or review.status == 'hidden' %}
+                        <a href="{{ url_for('admin.moderate_review', review_id=review.id, action='published') }}" class="btn-accent" style="padding: 5px 10px; font-size: 0.7rem; border-color: var(--neon-cyan); color: var(--neon-cyan);">Publish</a>
+                    {% endif %}
+                    
+                    {% if review.status == 'pending' or review.status == 'published' %}
+                        <a href="{{ url_for('admin.moderate_review', review_id=review.id, action='hidden') }}" class="btn-accent" style="padding: 5px 10px; font-size: 0.7rem; border-color: red; color: red;">Hide</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7" style="padding: 15px; text-align: center; color: #888;">No feedback in the system queue.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-container" style="max-width: 600px; margin: auto; background: var(--surface-dark); padding: 2rem; border: 1px solid var(--neon-cyan); border-radius: 5px;">
+    
+    <div style="border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+        <h2 style="color: var(--neon-cyan); margin: 0; text-transform: uppercase;">SUBMIT SYSTEM FEEDBACK</h2>
+        <p style="color: var(--neon-pink); font-size: 1.2rem; margin-top: 5px; font-weight: bold;">{{ room_type.name }}</p>
+    </div>
+
+    <!-- CRITICAL: enctype="multipart/form-data" allows physical file uploads -->
+    <form method="POST" action="" enctype="multipart/form-data">
+        <!-- Star Rating Selector (Keep exactly as is) -->
+        <div style="margin-bottom: 2rem;">
+            <label style="display: block; margin-bottom: 10px; color: var(--neon-cyan); text-align: center;">Overall Rating (1-5)</label>
+            <div style="display: flex; justify-content: center; gap: 10px;">
+                <label style="color: var(--text-light); font-size: 1.5rem; cursor: pointer;"><input type="radio" name="rating" value="1" required> 1</label>
+                <label style="color: var(--text-light); font-size: 1.5rem; cursor: pointer;"><input type="radio" name="rating" value="2"> 2</label>
+                <label style="color: var(--text-light); font-size: 1.5rem; cursor: pointer;"><input type="radio" name="rating" value="3"> 3</label>
+                <label style="color: var(--text-light); font-size: 1.5rem; cursor: pointer;"><input type="radio" name="rating" value="4"> 4</label>
+                <label style="color: var(--text-light); font-size: 1.5rem; cursor: pointer; color: var(--neon-pink);"><input type="radio" name="rating" value="5"> 5</label>
+            </div>
+        </div>
+
+        <!-- Text Comment (Keep exactly as is) -->
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 5px; color: var(--neon-cyan);">Feedback Details</label>
+            <textarea name="comment" rows="5" required placeholder="Describe your experience in the terminal..." style="width: 100%; padding: 10px; background: var(--bg-dark); border: 1px solid #333; color: white; resize: vertical;"></textarea>
+        </div>
+
+        <!-- NEW: Image Upload Input -->
+        <div style="margin-bottom: 2rem; padding: 15px; border: 1px dashed var(--neon-cyan); background: rgba(0, 243, 255, 0.05);">
+            <label style="display: block; margin-bottom: 10px; color: var(--neon-cyan);">Attach Image (Optional)</label>
+            <input type="file" name="review_image" accept="image/png, image/jpeg, image/jpg" style="color: var(--text-light); width: 100%;">
+        </div>
+        
+        <div style="background: rgba(0,0,0,0.5); padding: 15px; border-left: 3px solid var(--neon-cyan); margin-bottom: 2rem;">
+            <p style="color: #aaa; font-size: 0.9rem; margin: 0;">System Note: All feedback and attached media are subject to Administrator review before public deployment.</p>
+        </div>
+
+        <button type="submit" class="btn-accent" style="width: 100%; font-size: 1.2rem; padding: 15px;">Transmit Feedback</button>
+    </form>
+</div>
+{% endblock %}

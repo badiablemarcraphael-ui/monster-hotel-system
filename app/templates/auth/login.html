@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-container" style="max-width: 400px; margin: auto; background: var(--surface-dark); padding: 2rem; border: 1px solid var(--neon-cyan);">
+    <h2 style="color: var(--neon-cyan); text-align: center;">SYSTEM LOGIN</h2>
+    <form method="POST" action="">
+        <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 5px;">Email</label>
+            <input type="email" name="email" required style="width: 100%; padding: 8px; background: var(--bg-dark); border: 1px solid #333; color: white;">
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 5px;">Password</label>
+            <input type="password" name="password" required style="width: 100%; padding: 8px; background: var(--bg-dark); border: 1px solid #333; color: white;">
+        </div>
+        <button type="submit" class="btn-accent" style="width: 100%;">Access Terminal</button>
+    </form>
+</div>
+{% endblock %}

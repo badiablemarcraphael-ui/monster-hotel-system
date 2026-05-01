@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monster Hotel</title>
+    <!-- Link to your Global CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">MONSTER HOTEL</div>
+        <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                
+                {% if current_user.is_authenticated %}
+                    {% if current_user.role in ['super_admin', 'admin', 'staff'] %}
+                        <li><a href="{{ url_for('admin.dashboard') }}" style="color: var(--neon-pink);">Admin Terminal</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('user.dashboard') }}" style="color: var(--neon-cyan);">My Profile</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+                {% endif %}
+            </ul>
+    </nav>
+
+    <!-- Page specific content will be injected here -->
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

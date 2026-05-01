@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-container" style="max-width: 400px; margin: auto; background: var(--surface-dark); padding: 2rem; border: 1px solid var(--neon-cyan);">
+    <h2 style="color: var(--neon-cyan); text-align: center;">NEW USER REGISTRATION</h2>
+    <form method="POST" action="">
+        <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 5px;">Email</label>
+            <input type="email" name="email" required style="width: 100%; padding: 8px; background: var(--bg-dark); border: 1px solid #333; color: white;">
+        </div>
+        <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 5px;">Password</label>
+            <input type="password" name="password" required style="width: 100%; padding: 8px; background: var(--bg-dark); border: 1px solid #333; color: white;">
+        </div>
+        <!-- We will add the OTP field here later! -->
+        <button type="submit" class="btn-accent" style="width: 100%;">Register</button>
+    </form>
+</div>
+{% endblock %}
